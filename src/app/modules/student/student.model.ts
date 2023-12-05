@@ -83,6 +83,7 @@ const studentSchema = new Schema<TStudent, StudentModel>(
       type: Schema.Types.ObjectId,
       required: [true, 'User id is required'],
       unique: true,
+      // index: true,
       ref: 'User',
     },
     name: {
@@ -102,6 +103,7 @@ const studentSchema = new Schema<TStudent, StudentModel>(
       type: String,
       required: [true, 'Email is required'],
       unique: true,
+      // index: true
     },
     contactNo: { type: String, required: [true, 'Contact number is required'] },
     emergencyContactNo: {
@@ -122,6 +124,11 @@ const studentSchema = new Schema<TStudent, StudentModel>(
     permanentAddress: {
       type: String,
       required: [true, 'Permanent address is required'],
+    },
+    academicSemester: {
+      type: Schema.Types.ObjectId,
+      unique: true,
+      ref: 'AcademicSemester',
     },
     guardian: {
       type: guardianSchema,

@@ -41,6 +41,7 @@ export const createStudentValidationSchema = z.object({
       bloodGroup: z.enum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']),
       presentAddress: z.string(),
       permanentAddress: z.string(),
+      academicSemester: z.string(),
       guardian: guardianValidationSchema,
       localGuardian: localGuardianValidationSchema,
       profileImg: z.string(),
