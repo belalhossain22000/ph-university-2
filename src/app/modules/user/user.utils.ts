@@ -12,10 +12,14 @@ const findLastStudent = async () => {
 
 export const generateStudentId = async (payload: TAcademicSemester) => {
 
-    const currentId = (0).toString()
+    let currentId = (0).toString()
     const lastStudentId = await findLastStudent()
-    if (lastStudentId) {
-
+    const lastStudentSemesterCode = lastStudentId?.substring(4, 6)
+    const lastStudentSemesterYear = lastStudentId?.substring(0, 4)
+    const currentSemesterCode = payload.code;
+    const currentYear = payload.year
+    if (lastStudentId && lastStudentSemesterCode === currentSemesterCode && lastStudentSemesterYear === currentYear) {
+        currentId = lastStudentId?.substring(6)
     }
     let incrementId = (Number(currentId) + 1).toString().padStart(4, "0");
     incrementId = `${payload.year}${payload.code}${incrementId}`
