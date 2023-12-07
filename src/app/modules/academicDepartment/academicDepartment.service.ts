@@ -1,41 +1,39 @@
-import { TAcademicDepartment } from "./academicDepartment.interface";
-import { AcademicDepartmentModel } from "./academicDepartment.model";
+import { TAcademicDepartment } from './academicDepartment.interface';
+import { AcademicDepartment } from './academicDepartment.model';
 
-//create academic Department
 const createAcademicDepartmentIntoDB = async (payload: TAcademicDepartment) => {
-    const result = await AcademicDepartmentModel.create(payload);
-    return result;
+  const result = await AcademicDepartment.create(payload);
+  return result;
 };
 
-//get all academic Department
-const getAllAcademicFacultiesIntoDB = async () => {
-    const departments = await AcademicDepartmentModel.find();
-    return departments;
+const getAllAcademicDepartmentsFromDB = async () => {
+  const result = await AcademicDepartment.find().populate('academicFaculty');
+  return result;
 };
 
-
-//get single academic Department by id
-const getAcademicDepartmentByIdIntoDB = async (departmentId: string) => {
-    const department = await AcademicDepartmentModel.findById(departmentId);
-    return department;
+const getSingleAcademicDepartmentFromDB = async (id: string) => {
+  const result =
+    await AcademicDepartment.findById(id).populate('academicFaculty');
+  return result;
 };
 
-//update academic Department by id 
-const updateAcademicDepartmentIntoDB = async (departmentId: string, payload: TAcademicDepartment) => {
-    const updatedDepartment = await AcademicDepartmentModel.findByIdAndUpdate(departmentId, payload, { new: true });
-    return updatedDepartment;
+const updateAcademicDepartmentIntoDB = async (
+  id: string,
+  payload: Partial<TAcademicDepartment>,
+) => {
+  const result = await AcademicDepartment.findOneAndUpdate(
+    { _id: id },
+    payload,
+    {
+      new: true,
+    },
+  );
+  return result;
 };
 
-//delete academic Department by id
-const deleteAcademicDepartmentIntoDB = async (departmentId: string) => {
-    const deletedDepartment = await AcademicDepartmentModel.findByIdAndDelete(departmentId);
-    return deletedDepartment;
-};
-
-export const AcademicDepartmentService = {
-    createAcademicDepartmentIntoDB,
-    getAllAcademicFacultiesIntoDB,
-    getAcademicDepartmentByIdIntoDB,
-    updateAcademicDepartmentIntoDB,
-    deleteAcademicDepartmentIntoDB
+export const AcademicDepartmentServices = {
+  createAcademicDepartmentIntoDB,
+  getAllAcademicDepartmentsFromDB,
+  getSingleAcademicDepartmentFromDB,
+  updateAcademicDepartmentIntoDB,
 };

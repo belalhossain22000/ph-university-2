@@ -1,34 +1,28 @@
-import { Router } from "express";
-import validateRequest from "../../utils/validateRequest";
-import { AcademicFacultyValidation } from "./academicFaculty.validation";
-import { AcademicFacultyController } from "./academicFaculty.controller";
+import express from 'express';
+import validateRequest from '../../middlewares/validateRequest';
+import { AcademicFacultyControllers } from './academicFaculty.controller';
+import { AcademicFacultyValidation } from './academicFaculty.validation';
 
-const router = Router();
+const router = express.Router();
 
-//post 
 router.post(
-    "/create-academic-faculty",
-    validateRequest(AcademicFacultyValidation.createAcademicFacultyValidationSchema),
-    AcademicFacultyController.createAcademicFacultyIntoDB
+  '/create-academic-faculty',
+  validateRequest(
+    AcademicFacultyValidation.createAcademicFacultyValidationSchema,
+  ),
+  AcademicFacultyControllers.createAcademicFaculty,
 );
 
-//get all
-router.get("/get-all-academic-faculties", AcademicFacultyController.getAllAcademicFacultiesIntoDB);
+router.get('/:facultyId', AcademicFacultyControllers.getSingleAcademicFaculty);
 
-
-//get single
-router.get("/get-academic-faculty/:id", AcademicFacultyController.getAcademicFacultyByIdIntoDB);
-
-
-//update single
-router.put(
-    "/update-academic-faculty/:id",
-    validateRequest(AcademicFacultyValidation.updateAcademicFacultyValidationSchema),
-    AcademicFacultyController.updateAcademicFacultyIntoDB
+router.patch(
+  '/:facultyId',
+  validateRequest(
+    AcademicFacultyValidation.updateAcademicFacultyValidationSchema,
+  ),
+  AcademicFacultyControllers.updateAcademicFaculty,
 );
 
-
-//delete single
-router.delete("/delete-academic-faculty/:id", AcademicFacultyController.deleteAcademicFacultyIntoDB);
+router.get('/', AcademicFacultyControllers.getAllAcademicFaculties);
 
 export const AcademicFacultyRoutes = router;

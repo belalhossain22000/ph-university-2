@@ -1,41 +1,34 @@
-import { TAcademicFaculty } from "./academicFaculty.interface";
-import { AcademicFacultyModel } from "./academicFaculty.model";
+import { TAcademicFaculty } from './academicFaculty.interface';
+import { AcademicFaculty } from './academicFaculty.model';
 
-//create academic faculty
 const createAcademicFacultyIntoDB = async (payload: TAcademicFaculty) => {
-    const result = await AcademicFacultyModel.create(payload);
-    return result;
+  const result = await AcademicFaculty.create(payload);
+  return result;
 };
 
-//get all academic faculty
-const getAllAcademicFacultiesIntoDB = async () => {
-    const faculties = await AcademicFacultyModel.find();
-    return faculties;
+const getAllAcademicFacultiesFromDB = async () => {
+  const result = await AcademicFaculty.find();
+  return result;
 };
 
-
-//get single academic faculty by id
-const getAcademicFacultyByIdIntoDB = async (facultyId: string) => {
-    const faculty = await AcademicFacultyModel.findById(facultyId);
-    return faculty;
+const getSingleAcademicFacultyFromDB = async (id: string) => {
+  const result = await AcademicFaculty.findById(id);
+  return result;
 };
 
-//update academic faculty by id 
-const updateAcademicFacultyIntoDB = async (facultyId: string, payload: TAcademicFaculty) => {
-    const updatedFaculty = await AcademicFacultyModel.findByIdAndUpdate(facultyId, payload, { new: true });
-    return updatedFaculty;
+const updateAcademicFacultyIntoDB = async (
+  id: string,
+  payload: Partial<TAcademicFaculty>,
+) => {
+  const result = await AcademicFaculty.findOneAndUpdate({ _id: id }, payload, {
+    new: true,
+  });
+  return result;
 };
 
-//delete academic faculty by id
-const deleteAcademicFacultyIntoDB = async (facultyId: string) => {
-    const deletedFaculty = await AcademicFacultyModel.findByIdAndDelete(facultyId);
-    return deletedFaculty;
-};
-
-export const AcademicFacultyService = {
-    createAcademicFacultyIntoDB,
-    getAllAcademicFacultiesIntoDB,
-    getAcademicFacultyByIdIntoDB,
-    updateAcademicFacultyIntoDB,
-    deleteAcademicFacultyIntoDB
+export const AcademicFacultyServices = {
+  createAcademicFacultyIntoDB,
+  getAllAcademicFacultiesFromDB,
+  getSingleAcademicFacultyFromDB,
+  updateAcademicFacultyIntoDB,
 };

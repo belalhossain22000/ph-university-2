@@ -1,34 +1,31 @@
-import { Router } from "express";
-import validateRequest from "../../utils/validateRequest";
-import { AcademicDepartmentValidation } from "./academicDepartment.validation";
-import { AcademicDepartmentController } from "./academicDepartment.controller";
+import express from 'express';
+import validateRequest from '../../middlewares/validateRequest';
+import { AcademicDepartmentControllers } from './academicDepartment.controller';
+import { AcademicDepartmentValidation } from './academicDepartment.validation';
 
-const router = Router();
+const router = express.Router();
 
-//post 
 router.post(
-    "/create-academic-department",
-    validateRequest(AcademicDepartmentValidation.createAcademicDepartmentValidationSchema),
-    AcademicDepartmentController.createAcademicDepartmentIntoDB
+  '/create-academic-department',
+  validateRequest(
+    AcademicDepartmentValidation.createAcademicDepartmentValidationSchema,
+  ),
+  AcademicDepartmentControllers.createAcademicDepartmemt,
 );
 
-//get all
-router.get("/get-all-academic-departments", AcademicDepartmentController.getAllAcademicDepartmentIntoDB);
-
-
-//get single
-router.get("/get-academic-department/:id", AcademicDepartmentController.getAcademicDepartmentByIdIntoDB);
-
-
-//update single
-router.put(
-    "/update-academic-department/:id",
-    validateRequest(AcademicDepartmentValidation.updateAcademicDepartmentValidationSchema),
-    AcademicDepartmentController.updateAcademicDepartmentIntoDB
+router.get(
+  '/:departmentId',
+  AcademicDepartmentControllers.getSingleAcademicDepartment,
 );
 
+router.patch(
+  '/:departmentId',
+  validateRequest(
+    AcademicDepartmentValidation.updateAcademicDepartmentValidationSchema,
+  ),
+  AcademicDepartmentControllers.updateAcademicDeartment,
+);
 
-//delete single
-router.delete("/delete-academic-department/:id", AcademicDepartmentController.deleteAcademicDepartmentIntoDB);
+router.get('/', AcademicDepartmentControllers.getAllAcademicDepartments);
 
 export const AcademicDepartmentRoutes = router;

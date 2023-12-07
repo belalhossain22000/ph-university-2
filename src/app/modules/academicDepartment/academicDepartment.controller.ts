@@ -1,74 +1,66 @@
-import httpStatus from "http-status";
-import catchAsync from "../../utils/catchAsync";
-import sendResponse from "../../utils/sendResponse";
-import { AcademicDepartmentService } from "./academicDepartment.service";
+import httpStatus from 'http-status';
+import catchAsync from '../../utils/catchAsync';
+import sendResponse from '../../utils/sendResponse';
+import { AcademicDepartmentServices } from './academicDepartment.service';
 
-const createAcademicDepartmentIntoDB = catchAsync(async (req, res) => {
-    const result = await AcademicDepartmentService.createAcademicDepartmentIntoDB(req.body);
-    sendResponse(res, {
-        statusCode: httpStatus.OK,
-        success: true,
-        message: "Academic Department is Created successfully",
-        data: result
-    });
+const createAcademicDepartmemt = catchAsync(async (req, res) => {
+  const result =
+    await AcademicDepartmentServices.createAcademicDepartmentIntoDB(req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Academic department is created succesfully',
+    data: result,
+  });
 });
 
-const getAllAcademicDepartmentIntoDB = catchAsync(async (req, res) => {
-    const departments = await AcademicDepartmentService.getAllAcademicFacultiesIntoDB();
-    sendResponse(res, {
-        statusCode: httpStatus.OK,
-        success: true,
-        message: "All Academic Faculties fetched successfully",
-        data: departments
-    });
+const getAllAcademicDepartments = catchAsync(async (req, res) => {
+  const result =
+    await AcademicDepartmentServices.getAllAcademicDepartmentsFromDB();
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Academic departments are retrieved successfully',
+    data: result,
+  });
 });
 
-const getAcademicDepartmentByIdIntoDB = catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const department = await AcademicDepartmentService.getAcademicDepartmentByIdIntoDB(id);
-    if (!department) {
-        sendResponse(res, {
-            statusCode: httpStatus.NOT_FOUND,
-            success: false,
-            message: "Academic Department not found",
-            data: null
-        });
-        return;
-    }
-    sendResponse(res, {
-        statusCode: httpStatus.OK,
-        success: true,
-        message: "Academic Department fetched successfully",
-        data: department
-    });
+const getSingleAcademicDepartment = catchAsync(async (req, res) => {
+  const { departmentId } = req.params;
+  const result =
+    await AcademicDepartmentServices.getSingleAcademicDepartmentFromDB(
+      departmentId,
+    );
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Academic department is retrieved succesfully',
+    data: result,
+  });
 });
 
-const updateAcademicDepartmentIntoDB = catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const result = await AcademicDepartmentService.updateAcademicDepartmentIntoDB(id, req.body);
-    sendResponse(res, {
-        statusCode: httpStatus.OK,
-        success: true,
-        message: "Academic Department updated successfully",
-        data: result
-    });
+const updateAcademicDeartment = catchAsync(async (req, res) => {
+  const { departmentId } = req.params;
+  const result =
+    await AcademicDepartmentServices.updateAcademicDepartmentIntoDB(
+      departmentId,
+      req.body,
+    );
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Academic department is updated succesfully',
+    data: result,
+  });
 });
 
-const deleteAcademicDepartmentIntoDB = catchAsync(async (req, res) => {
-    const { id } = req.params;
-    const result = await AcademicDepartmentService.deleteAcademicDepartmentIntoDB(id);
-    sendResponse(res, {
-        statusCode: httpStatus.OK,
-        success: true,
-        message: "Academic Department deleted successfully",
-        data: result
-    });
-});
-
-export const AcademicDepartmentController = {
-    createAcademicDepartmentIntoDB,
-    getAllAcademicDepartmentIntoDB,
-    getAcademicDepartmentByIdIntoDB,
-    updateAcademicDepartmentIntoDB,
-    deleteAcademicDepartmentIntoDB
+export const AcademicDepartmentControllers = {
+  createAcademicDepartmemt,
+  getAllAcademicDepartments,
+  getSingleAcademicDepartment,
+  updateAcademicDeartment,
 };

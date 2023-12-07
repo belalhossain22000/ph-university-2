@@ -1,6 +1,4 @@
-// import bcrypt from 'bcrypt';
 import { Schema, model } from 'mongoose';
-// import config from '../../config';
 import {
   StudentModel,
   TGuardian,
@@ -78,12 +76,15 @@ const localGuradianSchema = new Schema<TLocalGuardian>({
 
 const studentSchema = new Schema<TStudent, StudentModel>(
   {
-    id: { type: String, required: [true, 'ID is required'], unique: true },
+    id: {
+      type: String,
+      required: [true, 'ID is required'],
+      unique: true,
+    },
     user: {
       type: Schema.Types.ObjectId,
       required: [true, 'User id is required'],
       unique: true,
-      // index: true,
       ref: 'User',
     },
     name: {
@@ -98,19 +99,18 @@ const studentSchema = new Schema<TStudent, StudentModel>(
       },
       required: [true, 'Gender is required'],
     },
-    dateOfBirth: { type: String },
+    dateOfBirth: { type: Date },
     email: {
       type: String,
       required: [true, 'Email is required'],
       unique: true,
-      // index: true
     },
     contactNo: { type: String, required: [true, 'Contact number is required'] },
     emergencyContactNo: {
       type: String,
       required: [true, 'Emergency contact number is required'],
     },
-    bloodGroup: {
+    bloogGroup: {
       type: String,
       enum: {
         values: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
@@ -125,11 +125,6 @@ const studentSchema = new Schema<TStudent, StudentModel>(
       type: String,
       required: [true, 'Permanent address is required'],
     },
-    academicSemester: {
-      type: Schema.Types.ObjectId,
-      unique: true,
-      ref: 'AcademicSemester',
-    },
     guardian: {
       type: guardianSchema,
       required: [true, 'Guardian information is required'],
@@ -139,9 +134,17 @@ const studentSchema = new Schema<TStudent, StudentModel>(
       required: [true, 'Local guardian information is required'],
     },
     profileImg: { type: String },
+    admissionSemester: {
+      type: Schema.Types.ObjectId,
+      ref: 'AcademicSemester',
+    },
     isDeleted: {
       type: Boolean,
       default: false,
+    },
+    academicDepartment: {
+      type: Schema.Types.ObjectId,
+      ref: 'AcademicDepartment',
     },
   },
   {
@@ -167,7 +170,6 @@ studentSchema.pre('findOne', function (next) {
   next();
 });
 
-
 studentSchema.pre('aggregate', function (next) {
   this.pipeline().unshift({ $match: { isDeleted: { $ne: true } } });
   next();
@@ -179,11 +181,9 @@ studentSchema.statics.isUserExists = async function (id: string) {
   return existingUser;
 };
 
-//creating a custom instance method
-// studentSchema.methods.isUserExists = async function (id: string) {
-//   const existingUser = await Student.findOne({ id });
-
-//   return existingUser;
-// };
-
 export const Student = model<TStudent, StudentModel>('Student', studentSchema);
+
+
+
+
+
