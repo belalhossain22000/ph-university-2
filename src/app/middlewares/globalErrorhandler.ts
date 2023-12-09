@@ -5,6 +5,7 @@ import { ErrorRequestHandler } from 'express';
 import { TErrorSources } from '../interface/error';
 import handleZodError from '../errors/handleZodError';
 import config from '../config';
+import handleValidationError from '../errors/handleValidationError';
 
 const globalErrorHandler: ErrorRequestHandler = (
   err,
@@ -30,6 +31,11 @@ const globalErrorHandler: ErrorRequestHandler = (
     statusCode = simplifiedError?.statusCode;
     message = simplifiedError?.message;
     errorSources = simplifiedError?.errorSources;
+  } else if (err?.name === 'ValidationError') {
+    const simplifiedError = handleValidationError(err)
+    statusCode = simplifiedError.statusCode;
+    message = simplifiedError.message;
+    errorSources = simplifiedError.errorSources
   }
 
   //ultimate return
