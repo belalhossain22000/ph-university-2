@@ -23,16 +23,21 @@ const createStudentIntoDB = async (password: string, payload: TStudent) => {
   const admissionSemester = await AcademicSemester.findById(
     payload.admissionSemester,
   );
+  // console.log({ admissionSemester })
 
   const session = await mongoose.startSession();
 
   try {
-    session.startTransaction();
+    await session.startTransaction();
+    if (!admissionSemester) {
+      // Handle the case where admissionSemester is null (e.g., throw an error or handle accordingly)
+      throw new AppError(httpStatus.NOT_FOUND, 'Admission semester not found');
+    }
     //set  generated id
     userData.id = await generateStudentId(admissionSemester);
     // create a user (transaction-1)
+
     const newUser = await User.create([userData], { session }); // array
-    console.log(newUser)
 
     //create a student
     if (!newUser.length) {
@@ -43,7 +48,6 @@ const createStudentIntoDB = async (password: string, payload: TStudent) => {
     payload.user = newUser[0]._id; //reference _id
 
     // create a student (transaction-2)
-
     const newStudent = await Student.create([payload], { session });
 
     if (!newStudent.length) {
